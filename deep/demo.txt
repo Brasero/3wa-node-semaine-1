@@ -1,0 +1,1 @@
+If the underlying functionality is not available for some reason, then
