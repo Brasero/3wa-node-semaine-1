@@ -1,5 +1,7 @@
 import {readFileSync} from "node:fs";
-import {parse} from "dotenv";
+import dotenv from "dotenv";
+
+dotenv.config()
 
 const data = JSON.parse(readFileSync('./students.json', 'utf8'))
 
@@ -31,4 +33,34 @@ export const addNote = (name, note) => {
     student.notes.push(note)
     student.average = average(student.notes)
     console.log(student)
+}
+
+export const mention = (name) => {
+    const student = students.find((student) => student.name.toLowerCase().trim() === name.toLowerCase().trim())
+    if (student === -1) {
+        console.log('cet étudiant n\'existe pas')
+        return
+    }
+    student.average = average(student.notes)
+    const {average: averageNote} = student
+    console.log(averageNote)
+    if(averageNote < 12) {
+        student.mention = process.env.P
+    } else if(averageNote >= parseFloat(12) && averageNote < parseFloat(14)) {
+        student.mention = process.env.AB
+        console.log('test')
+    } else if(averageNote >= 14 && averageNote < 16) {
+        student.mention = process.env.B
+    } else {
+        student.mention = process.env.TB
+    }
+
+    console.log(student)
+}
+
+export const mentionAll = () => {
+    students.map((student) => {
+        mention(student.name)
+    })
+    console.log(students)
 }

@@ -1,6 +1,9 @@
 import readline from 'node:readline'
 import {readFileSync} from "node:fs"
-import {addNote, findStudent} from './studentUtils.js'
+import {addNote, findStudent, mentionAll, mention} from './studentUtils.js'
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -38,6 +41,15 @@ rl.on('line', (line) => {
                     rl.prompt()
                 })
             })
+            break;
+
+        case line.match(/^mention /) ? line : null:
+            const arg = line.split(' ')[1]
+            mention(arg)
+            break;
+
+        case 'mention':
+            mentionAll()
             break;
 
         default:
