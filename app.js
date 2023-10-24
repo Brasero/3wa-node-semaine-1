@@ -1,17 +1,20 @@
 import readline from 'node:readline'
+import {readFileSync} from "node:fs"
+import {addNote, findStudent} from './studentUtils.js'
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
 
-const students = ["Alan", "Sonia", "Sophie"];
+const data = JSON.parse(readFileSync('./students.json', 'utf8'))
+
+const {students} = data
 
 
 // rl.question('Bonjour comment allez vous\n', (answer) => {
 //     console.log(answer)
 // })
-
 
 rl.setPrompt('FIND A STUDENT> ')
 rl.prompt()
@@ -19,18 +22,33 @@ rl.prompt()
 
 rl.on('line', (line) => {
 
-    students.map((student) => {
-        student = student.toLowerCase().trim()
-        if(student === line.toLowerCase().trim()) {
-            console.log("C'est gagné !")
-            rl.close()
-        }
-    })
 
-    console.log("Essayé encore \n")
+    if (line.trim() === 'quit') {
+        rl.close()
+    }
+
+    switch(line) {
+        case line.match(/^addNote /) ? line : null:
+            rl.question("A quel élève souhaitez vous ajouter une note ?\n", (answer) => {
+                const name = answer.toLowerCase().trim()
+                rl.question("Quel est la note à ajouter ? \n", (answer) => {
+                    const note = answer
+                    addNote(name, note);
+                    console.log("note ajoutée")
+                    rl.prompt()
+                })
+            })
+            break;
+
+        default:
+            const student = findStudent(line.toLowerCase().trim())
+            console.log(`${student.name} - Moyenne de l'élève : ${student.average}`)
+    }
+
     rl.prompt()
 })
 
 rl.on("close", () => {
+    console.log("A bientôt.")
     process.exit()
 })
