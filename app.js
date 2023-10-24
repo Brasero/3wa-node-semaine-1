@@ -5,35 +5,32 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 
+const students = ["Alan", "Sonia", "Sophie"];
+
 
 // rl.question('Bonjour comment allez vous\n', (answer) => {
 //     console.log(answer)
 // })
 
 
-rl.setPrompt('STUDENT> ')
+rl.setPrompt('FIND A STUDENT> ')
 rl.prompt()
 
 
 rl.on('line', (line) => {
-    switch(line) {
-        case "test":
-            rl.question("Quel est votre nom \n", (answer) => {
-                const Person = {
-                    name: answer,
-                    age: null
-                }
-                rl.question("Quel age avez vous ? \n", (answer) => {
-                    Person.age = answer
-                    console.log(Person)
-                    rl.close()
-                })
-            })
-    }
+
+    students.map((student) => {
+        student = student.toLowerCase().trim()
+        if(student === line.toLowerCase().trim()) {
+            console.log("C'est gagné !")
+            rl.close()
+        }
+    })
+
+    console.log("Essayé encore \n")
     rl.prompt()
 })
 
 rl.on("close", () => {
-    console.log('Bye')
     process.exit()
 })
