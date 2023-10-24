@@ -1,1 +1,0 @@
-Dans votre dossier Examples créez un fichier os_example.js, écrivez les lignes suivantes et exécutez le script en console
